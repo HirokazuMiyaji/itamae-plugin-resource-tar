@@ -6,12 +6,12 @@ module Itame
       class Tar < Itame::Resource::Base
         define_attribute :action, default: :create
         defing_attribute :source, type: String, default_name: true
-        defing_attribute :to, type: String
+        defing_attribute :dest, type: String
         define_attributes :option, type: String
 
         def action_create(options)
-          to = ::File.dirname(attributes.source) if attributes.to.empty?
-          result = run_command(["tar", attributes.option, attributes.source, "#{to}"])
+          to = ::File.dirname(attributes.source) if attributes.dest.empty?
+          result = run_command(["tar", attributes.option, attributes.source, "-C", "#{dest}"])
           if result.exit_status != 0
             Logger.info "tar:"
             result.stdout.each_line do |line|
